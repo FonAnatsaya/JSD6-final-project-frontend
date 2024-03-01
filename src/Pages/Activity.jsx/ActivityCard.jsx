@@ -29,13 +29,6 @@ function ActivityCard({
 }) {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [isFinish, setIsFinish] = useState(false);
-
-  useEffect(() => {
-    if (eachCardItem.actualTime) {
-      setIsFinish(false);
-    }
-  }, [eachCardItem.actualTime]);
 
   const timer = useRef();
   useEffect(() => {
@@ -77,11 +70,8 @@ function ActivityCard({
       ...item,
       actualTime: time,
     };
-    // console.log(itemUpdatedTime);
     setIsRunning(false);
-    setIsFinish(true);
     updateItem(itemUpdatedTime);
-    setTime(0);
   };
 
   return (
@@ -100,7 +90,7 @@ function ActivityCard({
           <div className="activityCard-card-topContent-right">
             <div className="activityCard-card-topContent-right-timeCounting">
               <FieldTimeOutlined style={{ width: "16px" }} />
-              {eachCardItem.actualTime > 0
+              {eachCardItem?.actualTime
                 ? formatTime(eachCardItem.actualTime)
                 : formatTime(time)}
             </div>
@@ -144,19 +134,16 @@ function ActivityCard({
             {eachCardItem.description}
           </div>
           <div className="activityCard-card-lastContent-buttons">
-            {!isRunning &&
-              !isFinish &&
-              time === 0 &&
-              !eachCardItem.actualTime && (
-                <Button
-                  className="card-startButton card-buttons"
-                  type="primary"
-                  onClick={() => setIsRunning(true)}
-                >
-                  START
-                </Button>
-              )}
-            {isRunning && !isFinish && !eachCardItem.actualTime && (
+            {!isRunning && time === 0 && !eachCardItem.actualTime && (
+              <Button
+                className="card-startButton card-buttons"
+                type="primary"
+                onClick={() => setIsRunning(true)}
+              >
+                START
+              </Button>
+            )}
+            {isRunning && !eachCardItem.actualTime && (
               <Button
                 className="card-finishButton card-buttons"
                 type="primary"
@@ -165,39 +152,32 @@ function ActivityCard({
                 Stop
               </Button>
             )}
-            {!isRunning &&
-              !isFinish &&
-              time > 0 &&
-              !eachCardItem.actualTime && (
-                <Button
-                  className="card-startButton card-buttons"
-                  type="primary"
-                  onClick={() => setIsRunning(true)}
-                >
-                  RESUME
-                </Button>
-              )}
+            {!isRunning && time > 0 && !eachCardItem.actualTime && (
+              <Button
+                className="card-startButton card-buttons"
+                type="primary"
+                onClick={() => setIsRunning(true)}
+              >
+                RESUME
+              </Button>
+            )}
 
-            {!isRunning &&
-              !isFinish &&
-              time > 0 &&
-              !eachCardItem.actualTime && (
-                <Button
-                  className="card-finishButton card-buttons"
-                  type="primary"
-                  onClick={() => handleFinish(eachCardItem)}
-                >
-                  Finish
-                </Button>
-              )}
-            {isFinish ||
-              (eachCardItem.actualTime && (
-                <h4>
-                  Total time : {getHours(eachCardItem.actualTime)} Hours{" "}
-                  {getMinutes(eachCardItem.actualTime)} Minutes{" "}
-                  {getSeconds(eachCardItem.actualTime)} Seconds
-                </h4>
-              ))}
+            {!isRunning && time > 0 && !eachCardItem.actualTime && (
+              <Button
+                className="card-finishButton card-buttons"
+                type="primary"
+                onClick={() => handleFinish(eachCardItem)}
+              >
+                Finish
+              </Button>
+            )}
+            {eachCardItem.actualTime && (
+              <h4>
+                Total time : {getHours(eachCardItem.actualTime)} Hours{" "}
+                {getMinutes(eachCardItem.actualTime)} Minutes{" "}
+                {getSeconds(eachCardItem.actualTime)} Seconds
+              </h4>
+            )}
           </div>
         </div>
       </div>
