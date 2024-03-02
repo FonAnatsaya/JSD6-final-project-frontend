@@ -2,9 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Form, Input, DatePicker, Select } from "antd";
 import axios from "axios";
 
-const apiKeyUserInfoUpdate = import.meta.env
-  .VITE_REACT_APP_API_KEY_USER_INFO_UPDATE;
-
 const UploadWidget = () => {
   const cloudinaryRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -32,10 +29,6 @@ const UploadWidget = () => {
     );
   }, []);
 
-  // useEffect(() =>{
-  //     console.log(image)
-  // },[image])
-
   const onSubmit = async (values) => {
     console.log(values);
     try {
@@ -48,7 +41,10 @@ const UploadWidget = () => {
         // Build the object with relevant fields and values from the form
       };
 
-      const response = await axios.put(apiKeyUserInfoUpdate, updatedUserData);
+      const response = await axios.put(
+        "http://localhost:3000/users/update",
+        updatedUserData
+      );
 
       message.success("Profile updated successfully!");
       // Handle successful update (e.g., redirect to profile page)

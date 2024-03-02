@@ -36,12 +36,10 @@ function ProgressPage() {
   };
 
   const getActivityInfo = () => {
-    const apiKeyGetActivityInfo = import.meta.env
-      .VITE_REACT_APP_API_KEY_GET_ACTIVITY_INFO;
     const userID_queryDate = { user_id, selectedDate: queryDate };
 
     axios
-      .post(apiKeyGetActivityInfo, userID_queryDate, {
+      .post("http://localhost:3000/activityInfoGetData", userID_queryDate, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

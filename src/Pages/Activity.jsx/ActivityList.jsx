@@ -11,10 +11,6 @@ import ActivityHeader from "./ActivityHeader";
 import { Flex } from "antd";
 import { Content } from "antd/es/layout/layout";
 
-const apiKeyGetActivityInfo = import.meta.env
-  .VITE_REACT_APP_API_KEY_GET_ACTIVITY_INFO;
-const apiKeyActivityInfo = import.meta.env.VITE_REACT_APP_API_KEY_ACTIVITY_INFO;
-
 function ActivityList() {
   const [activityItems, setActivityItems] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -45,7 +41,7 @@ function ActivityList() {
   const getActivityInfo = () => {
     const userID_selectedDate = { user_id, selectedDate };
     axios
-      .post(apiKeyGetActivityInfo, userID_selectedDate, {
+      .post("http://localhost:3000/activityInfoGetData", userID_selectedDate, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -66,7 +62,7 @@ function ActivityList() {
     const newActivity = { ...item, user_id };
     // console.log(newActivity.date);
     axios
-      .post(apiKeyActivityInfo, newActivity, {
+      .post("http://localhost:3000/activityInfo", newActivity, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -81,7 +77,7 @@ function ActivityList() {
 
   const deleteItem = (id) => {
     axios
-      .delete(`${apiKeyActivityInfo}/${id}`, {
+      .delete(`http://localhost:3000/activityInfo/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -99,7 +95,7 @@ function ActivityList() {
   const updateItem = (item) => {
     // console.log(item);
     axios
-      .put(apiKeyActivityInfo, item, {
+      .put("http://localhost:3000/activityInfo", item, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {

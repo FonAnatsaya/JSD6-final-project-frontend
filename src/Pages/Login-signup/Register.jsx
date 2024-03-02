@@ -17,8 +17,6 @@ import "./index.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const apiKeySignup = import.meta.env.VITE_REACT_APP_API_KEY_SIGNUP;
-
 const { Option } = Select;
 const formItemLayout = {
   labelCol: {
@@ -68,7 +66,7 @@ const Register = () => {
   const onFinish = (values) => {
     if (isEmailDuplicated) return;
     axios
-      .post(apiKeySignup, values)
+      .post("http://localhost:3000/signup", values)
       .then((response) => {
         if (response.status === 200) {
           navigate("/login");

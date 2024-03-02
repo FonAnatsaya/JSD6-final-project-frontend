@@ -5,8 +5,6 @@ import Section from "./Section.jpg";
 import "./index.css";
 import axios from "axios";
 
-const apiKeyLogin = import.meta.env.VITE_REACT_APP_API_KEY_LOGIN;
-
 const onFinishFailed = (errorInfo) => {
   // console.log("Failed:", errorInfo);
 };
@@ -19,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
     axios
-      .post(apiKeyLogin, values)
+      .post("http://localhost:3000/login", values)
       .then((response) => {
         // console.log(response);
         if (response.status === 200) {

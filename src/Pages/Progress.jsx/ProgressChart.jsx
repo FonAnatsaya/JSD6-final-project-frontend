@@ -13,24 +13,28 @@ function ProgressChart({ queryDate }) {
   const userObject = JSON.parse(userString);
   const user_id = userObject.user_id;
   const token = userObject.token;
-
-  // get apiKey
-  const apiKeyDate = import.meta.env.VITE_REACT_APP_API_KEY_DATE;
-  const apiKeyTypes = import.meta.env.VITE_REACT_APP_API_KEY_TYPE;
   const userID_queryDate = { user_id, selectedDate: queryDate };
 
   useEffect(() => {
     const getDataTypes = async () => {
-      const response = await axios.post(apiKeyTypes, userID_queryDate,{
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post(
+        "http://localhost:3000/activityInfoChartDonut",
+        userID_queryDate,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setActivitysListbyTypes(response.data.data);
     };
 
     const getDataDate = async () => {
-      const response = await axios.post(apiKeyDate, userID_queryDate,{
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post(
+        "http://localhost:3000/activityInfoChartBar",
+        userID_queryDate,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setActivitysListbyDate(response.data.data);
     };
 

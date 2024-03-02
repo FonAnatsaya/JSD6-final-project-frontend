@@ -22,10 +22,6 @@ import Img from "../../assets/profile.jpg";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const apiKeyUserGetInfo = import.meta.env.VITE_REACT_APP_API_KEY_USER_GET_INFO;
-const apiKeyUserInfoUpdate = import.meta.env
-  .VITE_REACT_APP_API_KEY_USER_INFO_UPDATE;
-
 const EditProfileShow = () => {
   const [publicId, setPublicId] = useState("");
   // Replace with your own cloud name
@@ -73,7 +69,7 @@ const EditProfileShow = () => {
 
   const myImage = cld.image(publicId);
   useEffect(() => {
-    const url = `${apiKeyUserGetInfo}/${id}`;
+    const url = `http://localhost:3000/users/${id}`;
 
     axios
       .get(url)
@@ -103,7 +99,7 @@ const EditProfileShow = () => {
       };
 
       const response = await axios
-        .put(apiKeyUserInfoUpdate, updatedUserData)
+        .put("http://localhost:3000/users/update", updatedUserData)
         .then((response) => {
           if (response.status === 200) {
             message.success("Profile updated successfully!");

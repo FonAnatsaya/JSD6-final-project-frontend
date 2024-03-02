@@ -1,17 +1,8 @@
-import Layout from "../Layout";
-import { BulbFilled, UserOutlined } from "@ant-design/icons";
-import { Avatar, Space } from "antd";
-import { Typography } from "antd";
-import { Flex } from "antd";
 import "./EditEmail.css";
 import { Button, Form, Input, message } from "antd";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const apiKeyUserGetInfo = import.meta.env.VITE_REACT_APP_API_KEY_USER_GET_INFO;
-const apiKeyUserEmailUpdate = import.meta.env
-  .VITE_REACT_APP_API_KEY_USER_EMAIL_UPDATE;
 
 const EditEmailShow = () => {
   const navigate = useNavigate();
@@ -28,7 +19,7 @@ const EditEmailShow = () => {
   const id = userObject.user_id;
   const token = userObject.token;
   useEffect(() => {
-    const url = `${apiKeyUserGetInfo}/${id}`;
+    const url = `http://localhost:3000/users/${id}`;
     axios
       .get(url)
       .then((response) => {
@@ -52,7 +43,7 @@ const EditEmailShow = () => {
       };
 
       const response = await axios
-        .put(apiKeyUserEmailUpdate, updatedUserData)
+        .put("http://localhost:3000/users/editemail", updatedUserData)
         .then((response) => {
           if (response.status === 200) {
             message.success("Profile updated successfully!");

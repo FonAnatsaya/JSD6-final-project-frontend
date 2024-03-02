@@ -5,15 +5,6 @@ import Addvideo from "../Tutorial/Addvideo.jsx";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const apiKeyGetTutorials = import.meta.env
-  .VITE_REACT_APP_API_KEY_GET_TUTORIALS_INFO;
-const apiKeyCreateTutorials = import.meta.env
-  .VITE_REACT_APP_API_KEY_CREATE_TUTORIALS_INFO;
-const apiKeyDeleteTutorials = import.meta.env
-  .VITE_REACT_APP_API_KEY_DELETE_TUTORIALS_INFO;
-const apiKeyUpdateTutorials = import.meta.env
-  .VITE_REACT_APP_API_KEY_UPDATE_TUTORIALS_INFO;
-
 function TutorialPage() {
   const [accordionItems, setAccordionItems] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -49,7 +40,7 @@ function TutorialPage() {
   const getVideoInfo = () => {
     axios
       .post(
-        apiKeyGetTutorials,
+        "http://localhost:3000/tutorialsGetData",
         { user_id },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -68,7 +59,7 @@ function TutorialPage() {
     const swapUrl = item.video.replace("watch?v=", "embed/");
     const newVideo = { ...item, user_id, video: swapUrl };
     axios
-      .post(apiKeyCreateTutorials, newVideo, {
+      .post("http://localhost:3000/tutorialsCreateData", newVideo, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -84,7 +75,7 @@ function TutorialPage() {
 
   const deleteItem = (id) => {
     axios
-      .delete(`${apiKeyDeleteTutorials}/${id}`, {
+      .delete(`http://localhost:3000/tutorialsDeleteData/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -104,7 +95,7 @@ function TutorialPage() {
     const swapUrl = item.video.replace("watch?v=", "embed/");
     const newVideo = { ...item, video: swapUrl };
     axios
-      .put(apiKeyUpdateTutorials, newVideo, {
+      .put("http://localhost:3000/tutorialsUpdateData", newVideo, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -118,37 +109,6 @@ function TutorialPage() {
         console.error("Error:", error);
       });
   };
-  // useEffect(() => {
-  //   console.log(formDisplay);
-  //   if (formDisplay) {
-  //     setIsFormOpen(true);
-  //   }
-  // }, [formDisplay]);
-
-  // const createItem = (item) => {
-  //   setAccordionItems((prev) => {
-  //     return [...prev, { ...item, id: uuid(), index: prev.length}];
-  //   });
-  // };
-  // const deleteItem = (id) => {
-  //   setAccordionItems((prev) => {
-  //     return prev.filter((each) => {
-  //       return each.id !== id;
-  //     });
-  //   });
-  // };
-  // const updateItem = (item) => {
-  //   console.log(item);
-  //   setAccordionItems((prev) => {
-  //     return prev.map((each) => {
-  //       if (each.id === item.id) {
-  //         return item;
-  //       } else {
-  //         return each;
-  //       }
-  //     });
-  //   });
-  // };
 
   return (
     <Layout>
