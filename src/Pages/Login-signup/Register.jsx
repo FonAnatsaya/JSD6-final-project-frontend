@@ -51,14 +51,26 @@ const tailFormItemLayout = {
   },
 };
 const Register = () => {
+  const [isEmailDuplicated, setIsEmailDuplicated] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
+  const checkEmailExist = (e) => {
+    const email = e.target.value;
+    const emailBody = { email };
+    axios
+      .post("http://localhost:3000/checkEmail", emailBody)
+      .then((response) => {
+        setIsEmailDuplicated(response.data.isEmailExist);
+      });
+  };
+
   const onFinish = (values) => {
+    if (isEmailDuplicated) return;
     axios
       .post(apiKeySignup, values)
       .then((response) => {
         if (response.status === 200) {
-          // console.log(`Response from API : ${response.data}`);
           navigate("/login");
         }
       })
@@ -249,7 +261,17 @@ const Register = () => {
               },
             ]}
           >
-            <Input />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Input
+                onBlur={checkEmailExist}
+                style={isEmailDuplicated && { borderColor: "#ff4d4f" }}
+              />
+              {isEmailDuplicated && (
+                <div style={{ color: "#ff4d4f" }}>
+                  This email already exists. Please try a different email.
+                </div>
+              )}
+            </div>
           </Form.Item>
 
           <Form.Item
