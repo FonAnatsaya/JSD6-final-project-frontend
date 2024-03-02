@@ -50,8 +50,19 @@ const tailFormItemLayout = {
 };
 const Register = () => {
   const [isEmailDuplicated, setIsEmailDuplicated] = useState(false);
+  const [isUsernameDuplicated, setIsUsernameDuplicated] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+
+  const checkUsernameExist = (e) => {
+    const username = e.target.value;
+    const usernameBody = { username };
+    axios
+      .post("http://localhost:3000/checkUsername", usernameBody)
+      .then((response) => {
+        setIsUsernameDuplicated(response.data.isUsernameExist);
+      });
+  };
 
   const checkEmailExist = (e) => {
     const email = e.target.value;
@@ -64,7 +75,7 @@ const Register = () => {
   };
 
   const onFinish = (values) => {
-    if (isEmailDuplicated) return;
+    if (isEmailDuplicated || isUsernameDuplicated) return;
     axios
       .post("http://localhost:3000/signup", values)
       .then((response) => {
@@ -217,7 +228,17 @@ const Register = () => {
               },
             ]}
           >
-            <Input />
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Input
+                onBlur={checkUsernameExist}
+                style={isUsernameDuplicated && { borderColor: "#ff4d4f" }}
+              />
+              {isUsernameDuplicated && (
+                <div style={{ color: "#ff4d4f" }}>
+                  This username already exists. Please try a different username.
+                </div>
+              )}
+            </div>
           </Form.Item>
 
           <Form.Item
